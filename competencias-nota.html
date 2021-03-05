@@ -1,0 +1,223 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <head>
+        <title>Conversor competencias-nota</title>
+
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+
+
+        <script src="https://code.jquery.com/jquery-3.5.1.js">
+        </script>
+
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js">
+        </script>
+
+
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+    </head>
+    <body>
+        <!--variables globales y funciones-->
+        <script type="text/javascript">
+        function dot(v1,v2){
+            var result=0;
+            if (v1.length != v2.length) {
+                return 'error';
+            }
+            for (i=0;i<v1.length;i++){
+                result+=v1[i]*v2[i];
+            }
+            return result;
+        }
+        function create_menu(name,list){
+            var namid='#'+name;
+
+            $(namid).empty();
+            $(namid).append('<label for="'+name+'">Selecciona '+name+':</label>')
+            $(namid).append('<select name="'+name+'" id="'+name+'">')
+            for (i=0;i<list.length;i++){
+                $(namid).append('<option value="'+list[i]+'">'+list[i]+'</option>')
+            }
+            $(namid).append('</select>')
+            //$("#nota").val(0)
+        }
+
+        function make_comps(lista){
+
+            $('#div2').empty();
+            $('#div2').append('<table>');
+            for (i=0;i<lista.length;i++){
+                $('#div2').append('<tr> <td>');
+                cad='<label id="label_'+competencias[i]+'" name="label_'+competencias[i]+'"for="'+competencias[i]+'">'+competencias[i]+' ('+lista[i]+' %)'
+
+                $('#div2').append(cad+'</label> </td> <td>');
+
+                $('#div2').append('<input type="number" class="CC" id="'+competencias[i]+'" name="'+competencias[i]+'" value="0" min="0" max="5" size=2>');
+                $('#div2').append('</td> </tr>');
+
+            }
+            $('#div2').append('</table>');
+            //$("#nota").val(0)
+        }
+
+        function reset_comps(lista){
+            for (i=0;i<lista.length;i++){
+                $('#label_'+competencias[i]).text(competencias[i]+' ('+lista[i]+' %)')
+            }
+        }
+
+
+        function compute_cualif(lista){
+            var cualif=[]
+            var pesos=[]
+            var suma=lista.reduce((a,b) => a+b,0)
+            for (i=0;i<competencias.length;i++){
+                cualif[i]=parseInt($('#'+competencias[i]).val());
+                pesos[i]=lista[i]/suma;
+
+            }
+            return Math.round(2*dot(pesos,cualif))
+        }
+
+        var competencias=['CCL', 'CMCCT', 'CD', 'CAA', 'CSC', 'CSIEE', 'CCEC'];
+        var perfiles={'1º de ESO': {
+            'Bioloxía e Xeoloxía': [7.353, 47.059, 5.882, 13.235, 11.765, 8.824, 5.882],
+            'Educación Física': [4.651, 11.628, 4.651, 25.581, 23.256, 23.256, 6.977],
+            'Educación Plástica, Visual e Audiovisual': [16.667, 16.667, 8.333, 10.417, 12.5, 14.583, 20.833],
+            'Lingua Castelá e Literatura': [41.026, 5.128, 15.385, 10.256, 12.821, 2.564, 12.821],
+            'Lingua Galega e Literatura': [53.846, 0.0, 9.467, 15.976, 11.834, 3.55, 5.325],
+            'Matemáticas': [3.883, 74.757, 3.883, 5.825, 4.854, 4.854, 1.942],
+            'Primeira Lingua Estranxeira': [26.891, 0.0, 19.328, 26.891, 0.0, 0.0, 26.891],
+            'Segunda Lingua Estranxeira': [26.829, 0.0, 19.512, 26.829, 0.0, 0.0, 26.829],
+            'Valores éticos': [21.127, 2.817, 5.634, 16.901, 36.62, 16.901, 0.0],
+            'Xeografía e Historia': [9.924, 16.794, 11.45, 29.008, 25.191, 0.0, 7.634]},
+        '2º de ESO': {
+            'Educación Física': [3.774, 13.208, 1.887, 28.302, 20.755, 24.528, 7.547],
+            'Física e Química': [10.0, 60.0, 4.444, 10.0, 6.667, 6.667, 2.222],
+            'Lingua Castelá e Literatura': [53.704, 5.556, 7.407, 11.111, 11.111, 0.0, 11.111],
+            'Lingua Galega e Literatura': [53.191, 0.0, 8.511, 15.426, 15.957, 2.66, 4.255],
+            'Matemáticas': [4.167, 72.917, 4.167, 6.25, 5.208, 5.208, 2.083],
+            'Música': [9.434, 3.774, 9.434, 11.321, 7.547, 9.434, 49.057],
+            'Primeira Lingua Estranxeira': [22.222, 0.0, 20.915, 13.725, 21.569, 0.0, 21.569],
+            'Segunda Lingua Estranxeira': [25.581, 0.0, 22.093, 25.581, 0.0, 3.488, 23.256],
+            'Tecnoloxía': [10.811, 32.432, 14.865, 21.622, 5.405, 12.162, 2.703],
+            'Valores éticos': [31.148, 6.557, 6.557, 9.836, 26.23, 9.836, 9.836],
+            'Xeografía e Historia': [15.541, 20.27, 18.243, 21.622, 20.946, 0.0, 3.378]},
+        '3º de ESO': {
+            'Bioloxía e Xeoloxía': [4.854, 48.544, 4.854, 12.621, 18.447, 5.825, 4.854],
+            'Educación Física': [3.846, 13.462, 3.846, 25.0, 21.154, 25.0, 7.692],
+            'Educación Plástica, Visual e Audiovisual': [17.949, 15.385, 10.256, 10.256, 12.821, 15.385, 17.949],
+            'Física e Química': [8.333, 58.333, 7.143, 8.333, 7.143, 7.143, 3.571],
+            'Lingua Castelá e Literatura': [55.224, 1.493, 5.97, 11.94, 13.433, 2.985, 8.955],
+            'Lingua Galega e Literatura': [53.266, 0.0, 8.543, 15.075, 18.09, 2.513, 2.513],
+            'Matemáticas Orientadas ás Ensinanzas Académicas': [5.455, 69.091, 5.455, 5.455, 5.455, 5.455, 3.636],
+            'Matemáticas Orientadas ás Ensinanzas Aplicadas': [5.882, 71.569, 3.922, 5.882, 4.902, 4.902, 2.941],
+            'Música': [10.345, 0.0, 6.897, 22.414, 10.345, 8.621, 41.379],
+            'Primeira Lingua Estranxeira': [22.642, 0.0, 9.434, 22.642, 22.642, 0.0, 22.642],
+            'Segunda Lingua Estranxeira': [20.339, 0.0, 14.407, 20.339, 20.339, 4.237, 20.339],
+            'Tecnoloxía': [10.294, 27.941, 16.176, 26.471, 4.412, 13.235, 1.471],
+            'Xeografía e Historia': [17.881, 12.583, 11.258, 23.841, 19.205, 11.258, 3.974],
+            'Valores éticos': [19.231, 5.769, 9.615, 13.462, 32.692, 9.615, 9.615],
+            'Cultura Clásica': [21.739, 13.043, 18.116, 11.594, 17.391, 2.174, 15.942]},
+        '4º de ESO': {
+            'Cultura Clásica': [21.739, 13.043, 18.116, 11.594, 17.391, 2.174, 15.942],
+            'Artes Escénicas e Danza': [10.204, 6.122, 6.122, 28.571, 10.204, 12.245, 26.531],
+            'Bioloxía e Xeoloxía': [12.871, 21.782, 2.97, 34.653, 11.881, 12.871, 2.97],
+            'Ciencias Aplicadas á Actividade Profesional': [7.865, 28.09, 6.742, 20.225, 21.348, 14.607, 1.124],
+            'Cultura Científica': [12.281, 38.596, 5.263, 10.526, 15.789, 8.772, 8.772],
+            'Economía': [14.851, 22.772, 19.802, 16.832, 22.772, 2.97, 0.0],
+            'Educación Física': [5.357, 19.643, 5.357, 16.071, 25.0, 21.429, 7.143],
+            'Educación Plástica, Visual e Audiovisual': [0.0, 11.842, 13.158, 14.474, 0.0, 27.632, 32.895],
+            'Filosofía': [33.929, 5.357, 3.571, 17.857, 15.179, 8.929, 15.179],
+            'Física e Química': [6.383, 62.411, 7.092, 7.092, 6.383, 5.674, 4.965],
+            'Iniciación á Actividade Emprendedora e Empresarial': [6.579, 25.0, 17.105, 14.474, 6.579, 30.263, 0.0],
+            'Latín': [32.773, 8.403, 13.445, 21.008, 10.084, 4.202, 10.084],
+            'Lingua Castelá e Literatura': [59.829, 2.564, 5.983, 16.239, 8.547, 2.564, 4.274],
+            'Lingua Galega e Literatura': [55.702, 0.0, 7.895, 12.281, 17.544, 1.754, 4.825],
+            'Matemáticas Orientadas ás Ensinanzas Académicas': [4.854, 70.874, 5.825, 5.825, 4.854,5.825, 1.942],
+            'Matemáticas Orientadas ás Ensinanzas Aplicadas': [6.593, 70.33, 4.396, 6.593, 5.495, 5.495, 1.099],
+            'Música': [12.121, 6.061, 18.182, 12.121, 25.758, 3.03, 22.727],
+            'Primeira Lingua Estranxeira': [24.026, 0.0, 9.74, 22.727, 23.377, 0.0, 20.13],
+            'Segunda Lingua Estranxeira': [21.622, 0.0, 13.514, 21.622, 20.721, 0.901, 21.622],
+            'Tecnoloxía': [11.364, 30.682, 12.5, 20.455, 7.955, 12.5, 4.545],
+            'Tecnoloxías da Información e da Comunicación': [15.385, 0.0, 35.897, 16.667, 14.103, 11.538, 6.41],
+            'Valores éticos': [22.222, 5.556, 9.259, 9.259, 33.333, 12.963, 7.407],
+            'Xeografía e Historia': [24.706, 5.294, 1.765, 27.647, 37.059, 1.765,1.765]}
+        };
+
+        </script>
+
+
+        <div class="container">
+            <h2>Estimación da nota en función do perfil competencial</h2>
+            <br>
+            <br>
+            <form class="vm" action="index.html" method="get">
+                <div class="form-group" id='div1' name='div1'>
+                    <label for="nivel">Nivel:</label>
+                    <select  name="nivel" id="nivel">
+                        <option value="1º de ESO">1º de ESO</option>
+                        <option value="2º de ESO">2º de ESO</option>
+                        <option value="3º de ESO">3º de ESO</option>
+                        <option value="4º de ESO">4º de ESO</option>
+
+                    </select>
+
+                <label for="asignatura">Asignatura:</label>
+                <select  name="asignatura" id="asignatura">
+                </select>
+                </div>
+                <div class="form-group" id="div2" name 'div2'>
+
+
+                </div>
+                <p><b>Nota estimada:</b> <input type="text" name="nota" id="nota" value="0" size="3">
+            </form>
+
+
+            <script type="text/javascript">
+
+
+            $(document).ready(function(){
+
+                 var nivel=$('#nivel').val()
+                 create_menu('asignatura',Object.keys(perfiles[nivel]));
+                 var asign=$('#asignatura').val();
+                 var lista=perfiles[nivel][asign];
+                 //console.log(nivel+' -- '+asign);
+
+                 make_comps(lista);
+                 $("#nota").val(compute_cualif(lista));
+
+                 $('#nivel').change(function(){
+                     nivel=$('#nivel').val();
+                     create_menu('asignatura',Object.keys(perfiles[nivel]));
+                     asign=$('#asignatura').val();
+                     lista=perfiles[nivel][asign];
+                     //console.log(nivel+' -- '+asign);
+                     reset_comps(lista);
+                     $("#nota").val(compute_cualif(lista));
+                 })
+                 $('#asignatura').change(function(){
+                     asign=$('#asignatura').val();
+                     lista=perfiles[nivel][asign];
+                     //console.log(nivel+' -- '+asign);
+                     reset_comps(lista);
+                     $("#nota").val(compute_cualif(lista));
+                 })
+                $(".CC").change(function(){
+                    $("#nota").val(compute_cualif(lista));
+                    //console.log(compute_cualif(lista))
+                })
+
+            })
+
+            </script>
+        </div>
+    </body>
+</html>
