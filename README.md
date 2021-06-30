@@ -8,4 +8,4 @@ Objetos y scripts python para el uso de Moodle en la acción tutorial y docente
 3. __Generador de salidas AV_BD.ipynb__: Jupyter notebook con funciones para generar salidas útiles a partir de la AVBD
 4. __Genera Consello Orientador.ipynb__: Jupyter notebook con funciones para generar los formularios del "Consello Orientador"
 5. __Xestión avaliación competencias__: Moodle book con la teoría y la implementación de la gestión del cálculo de las competencias globales de cada alumn via Moodle
-6. __Enquisas_listados_garda__: generador de encuestas para el control de asistencia de los alumns por parte del profesorado de guardia.
+6. __Listados_garda__: generador de encuestas para el control de asistencia de los alumns por parte del profesorado de guardia.
